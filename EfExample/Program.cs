@@ -21,7 +21,9 @@ namespace EfExample
 
                 // PrintCategory(1);
                 // DeleteCatagory(15);
-                GetProductId(3);
+                //GetProductId(3);
+                // GetProductString("Chai");
+                GetProductByCatagory(2);
                 foreach (var product in db.Products.Include(x => x.Category))
                 {
                     // Different ways to do the same - syntatic sugar
@@ -108,13 +110,44 @@ namespace EfExample
             using (var db = new NorthwindContext())
             {
 
-                var product = db.Products.FirstOrDefault(x => x.Id == id);
+                var product = db.Products.Include(Category => Category.Category).FirstOrDefault(x => x.Id == id);
                 Console.WriteLine(product.Name + ", " + product.UnitPrice + ", " + product.Category.Name);
 
 
             }
         }
 
-    }
 
+        private static void GetProductString(string name)
+        {
+            using (var db = new NorthwindContext())
+            {
+                foreach (var product in db.Products.Include(Category => Category.Category))
+                {
+                    if (name == product.Name)
+                    {
+                        Console.WriteLine(product.Name + ", " + product.Category.Name);
+                    }
+                }
+            }
+        }
+
+
+        private static void GetProductByCatagory(int id)
+        {
+            using (var db = new NorthwindContext())
+            {
+
+                foreach (var product in db.Products.Include(Category => Category.Category))
+                {
+                    if (id == product.Category.Id)
+                    {
+                        Console.WriteLine(product.Name);
+                    }
+
+                }
+            }
+
+        }
+    }
 }
