@@ -4,11 +4,11 @@ using System.Text;
 
 namespace EfExample
 {
-    class OrderDetails
+   public class OrderDetail
     {
 
         public double UnitPrice { get; set; }
-        public string Name { get; set; }
+        public int OrderId{ get; set; }
         public Product Product { get; set; }
         public int Quantity { get; set; }
         public double Discount { get; set; }
