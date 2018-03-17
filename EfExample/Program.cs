@@ -20,7 +20,8 @@ namespace EfExample
             {
 
                 // PrintCategory(1);
-                DeleteCatagory(15);
+                // DeleteCatagory(15);
+                GetProductId(3);
                 foreach (var product in db.Products.Include(x => x.Category))
                 {
                     // Different ways to do the same - syntatic sugar
@@ -102,9 +103,18 @@ namespace EfExample
                 }
             }
         }
+        private static void GetProductId(int id)
+        {
+            using (var db = new NorthwindContext())
+            {
+
+                var product = db.Products.FirstOrDefault(x => x.Id == id);
+                Console.WriteLine(product.Name + ", " + product.UnitPrice + ", " + product.Category.Name);
+
+
+            }
+        }
+
     }
 
-
 }
- 
-

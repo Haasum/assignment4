@@ -15,7 +15,7 @@ namespace EfExample
             base.OnConfiguring(optionsBuilder);
 
             optionsBuilder.UseMySql(
-                "server=localhost;database=northwind;uid=root;pwd=puggle;SslMode=none");
+                "server=localhost;database=northwind;uid=bulskov;pwd=henrik;SslMode=none");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,7 +25,6 @@ namespace EfExample
             //modelBuilder.Entity<Category>().ToTable("categories");
             modelBuilder.Entity<Category>().Property(x => x.Id).HasColumnName("categoryid");
             modelBuilder.Entity<Category>().Property(x => x.Name).HasColumnName("categoryname");
-          //  modelBuilder.Entity<Category>().Property(x => x.Description).HasColumnName("categorydescription");
 
             modelBuilder.Entity<Product>().Property(x => x.Id).HasColumnName("productid");
             modelBuilder.Entity<Product>().Property(x => x.Name).HasColumnName("productname");
