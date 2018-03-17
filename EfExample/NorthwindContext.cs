@@ -32,6 +32,7 @@ namespace EfExample
             modelBuilder.Entity<Product>().Property(x => x.Name).HasColumnName("productname");
             modelBuilder.Entity<Product>().Property(x => x.UnitPrice).HasColumnName("unitprice");
 
+            modelBuilder.Entity<OrderDetail>().Property(x => x.OrderID).HasColumnName("orderid");
             modelBuilder.Entity<OrderDetail>().Property(x => x.UnitPrice).HasColumnName("unitprice");
             modelBuilder.Entity<OrderDetail>().Property(x => x.Quantity).HasColumnName("quantity");
             modelBuilder.Entity<OrderDetail>().Property(x => x.Discount).HasColumnName("discount");

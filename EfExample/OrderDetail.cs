@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace EfExample
@@ -8,7 +9,8 @@ namespace EfExample
     {
 
         public double UnitPrice { get; set; }
-        public int OrderId{ get; set; }
+        [Key]
+        public int OrderID{ get; set; }
         public Product Product { get; set; }
         public int Quantity { get; set; }
         public double Discount { get; set; }
