@@ -6,6 +6,8 @@ namespace EfExample
 {
     public class Product
     {
+        public OrderDetail orderDetail { get; set; }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public Category Category { get; set; }

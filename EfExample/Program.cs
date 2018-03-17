@@ -24,8 +24,10 @@ namespace EfExample
                 //GetProductId(3);
                 // GetProductString("Chai");
                 //GetProductByCatagory(2);
-                GetOrderdetails(10280);
-                foreach (var product in db.Products.Include(x => x.Category))
+                // GetOrderdetails(10248);
+                GetProductDetails(1);
+        
+                    foreach (var product in db.Products.Include(x => x.Category))
                 {
                     // Different ways to do the same - syntatic sugar
                     //Console.WriteLine(product.Name + " " + product.Category.Name);
@@ -151,8 +153,8 @@ namespace EfExample
 
         }
 
-        private static void GetOrderdetails(int id)
-        {   
+        private static void GetOrderDetails(int id)
+        {
             using (var db = new NorthwindContext())
             {
 
@@ -162,5 +164,16 @@ namespace EfExample
             }
 
         }
+        private static void GetProductDetails(int id)
+        {
+            using (var db = new NorthwindContext())
+            {
+                foreach (var product in db.Products.Include(OrderDetail => OrderDetail.orderDetail).ThenInclude(Order => Order.Order))
+                    if(product.Id == id)
+                    {
+                        Console.WriteLine(product.orderDetail.Order.OrderDate + ", " + product.UnitPrice + ", " + product.orderDetail.Quantity);
+                    }
+                }
+            }
+        }
     }
-}

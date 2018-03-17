@@ -42,10 +42,10 @@ namespace EfExample
             modelBuilder.Entity<Order>().Property(x => x.EmployeeId).HasColumnName("employeeid");
             modelBuilder.Entity<Order>().Property(x => x.OrderDate).HasColumnName("orderdate");
             modelBuilder.Entity<Order>().Property(x => x.RequiredDate).HasColumnName("requireddate");
-            modelBuilder.Entity<Order>().Property(x => x.ShippedDate).HasColumnName("shippeddate");
+      //      modelBuilder.Entity<Order>().Property(x => x.ShippedDate).HasColumnName("shippeddate");
             modelBuilder.Entity<Order>().Property(x => x.Freight).HasColumnName("freight");
             modelBuilder.Entity<Order>().Property(x => x.ShipName).HasColumnName("shipname");
-            modelBuilder.Entity<Order>().Property(x => x.ShipAdress).HasColumnName("shipadress");
+            modelBuilder.Entity<Order>().Property(x => x.ShipAdress).HasColumnName("shipaddress");
             modelBuilder.Entity<Order>().Property(x => x.ShipCity).HasColumnName("shipcity");
             modelBuilder.Entity<Order>().Property(x => x.ShipPostalCode).HasColumnName("shippostalcode");
             modelBuilder.Entity<Order>().Property(x => x.ShipCountry).HasColumnName("shipcountry");
