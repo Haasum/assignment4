@@ -49,7 +49,7 @@ namespace EfExample
             modelBuilder.Entity<Order>().Property(x => x.ShipPostalCode).HasColumnName("shippostalcode");
             modelBuilder.Entity<Order>().Property(x => x.ShipCountry).HasColumnName("shipcountry");
 
-            modelBuilder.Entity<Order>().HasMany(x => x.OrderDetail).WithOne(x => x.Order).IsRequired();
+            modelBuilder.Entity<Order>().HasMany(x => x.OrderDetails).WithOne(x => x.Order).IsRequired();
 
 
 
