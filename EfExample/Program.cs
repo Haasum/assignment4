@@ -180,7 +180,7 @@ namespace EfExample
                     if (id == order.OrderId)
                     {
                         Console.WriteLine("Order:" + order.OrderId + " " + order.OrderDate + " " + order.RequiredDate + " " + order.Freight + " " + order.ShipName + " " + order.ShipCity);
-                        Console.WriteLine("Details:" + order);
+                        Console.WriteLine("Details:" + order.);
                     }
                 }
             }
