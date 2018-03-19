@@ -18,6 +18,7 @@ namespace EfExample
         public string ShipCity { get; set; }
         public string ShipPostalCode { get; set; }
         public string ShipCountry { get; set; }
+        public Product Product { get; set; }
         
     }
 }

@@ -24,9 +24,11 @@ namespace EfExample
                 //GetProductId(3);
                 // GetProductString("Chai");
                 //GetProductByCatagory(2);
-                // GetOrderdetails(10248);
-                GetProductDetails(1);
-        
+                 GetOrderdetails(10248);
+               // GetProductDetails(1);
+               // GetOrderByID(10249);
+
+
                     foreach (var product in db.Products.Include(x => x.Category))
                 {
                     // Different ways to do the same - syntatic sugar
@@ -113,7 +115,7 @@ namespace EfExample
             using (var db = new NorthwindContext())
             {
 
-                var product = db.Products.Include(Category => Category.Category).FirstOrDefault(x => x.Id == id);
+                var product = db.Products.Include(Category => Category.Category).FirstOrDefault(x => x.ProductID == id);
                 Console.WriteLine(product.Name + ", " + product.UnitPrice + ", " + product.Category.Name);
 
 
@@ -169,11 +171,26 @@ namespace EfExample
             using (var db = new NorthwindContext())
             {
                 foreach (var product in db.Products.Include(OrderDetail => OrderDetail.orderDetail).ThenInclude(Order => Order.Order))
-                    if(product.Id == id)
+                    if(product.ProductID == id)
                     {
                         Console.WriteLine(product.orderDetail.Order.OrderDate + ", " + product.UnitPrice + ", " + product.orderDetail.Quantity);
                     }
                 }
             }
+        private static void GetOrderByID(int id)
+        {
+            using (var db = new NorthwindContext())
+            {
+                var order = db.Orders.Include(Product => Product.Product).ThenInclude(Category => Category.Category).FirstOrDefault(x => x.OrderId == id);
+                if (id == order.OrderId)
+                {
+                    Console.WriteLine(order.OrderId + "," + order.OrderDate + ", " + order.RequiredDate + "," + order.Freight + "," + order.ShipName + ", " + order.ShipCity);
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
         }
     }
