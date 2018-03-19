@@ -6,6 +6,8 @@ namespace EfExample
 {
     public class Order
     {
+       
+       public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public int OrderId { get; set; }
         public string CustomerId { get; set; }
         public int EmployeeId { get; set; }
@@ -18,7 +20,7 @@ namespace EfExample
         public string ShipCity { get; set; }
         public string ShipPostalCode { get; set; }
         public string ShipCountry { get; set; }
-        public Product Product { get; set; }
+        
         
     }
 }

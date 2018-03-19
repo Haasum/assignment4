@@ -1,19 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EfExample
 {
     class Program
     {
-        private static int TakeInput()
-        {
-            Console.WriteLine("Enter the ID value of the product you want");
-            int UserInput = Convert.ToInt32(Console.ReadLine());
-            return UserInput;
 
-
-        }
         static void Main(string[] args)
         {
             using (var db = new NorthwindContext())
@@ -22,14 +16,14 @@ namespace EfExample
                 // PrintCategory(1);
                 // DeleteCatagory(15);
                 //GetProductId(3);
-                // GetProductString("Chai");
-                //GetProductByCatagory(2);
-                 GetOrderdetails(10248);
-               // GetProductDetails(1);
-               // GetOrderByID(10249);
+                //  GetProductString("Chai");
+                //   GetProductByCatagory(2);
+                //GetOrderDetails(10248);
+                // GetProductDetails(1);
+                GetOrderByID(10260);
 
 
-                    foreach (var product in db.Products.Include(x => x.Category))
+                foreach (var product in db.Products.Include(x => x.Category))
                 {
                     // Different ways to do the same - syntatic sugar
                     //Console.WriteLine(product.Name + " " + product.Category.Name);
@@ -171,26 +165,26 @@ namespace EfExample
             using (var db = new NorthwindContext())
             {
                 foreach (var product in db.Products.Include(OrderDetail => OrderDetail.orderDetail).ThenInclude(Order => Order.Order))
-                    if(product.ProductID == id)
+                    if (product.ProductID == id)
                     {
                         Console.WriteLine(product.orderDetail.Order.OrderDate + ", " + product.UnitPrice + ", " + product.orderDetail.Quantity);
                     }
-                }
             }
+        }
         private static void GetOrderByID(int id)
         {
             using (var db = new NorthwindContext())
             {
-                var order = db.Orders.Include(Product => Product.Product).ThenInclude(Category => Category.Category).FirstOrDefault(x => x.OrderId == id);
-                if (id == order.OrderId)
+                foreach (var order in db.Orders.Include(OrderDetail => OrderDetail.OrderDetails))
                 {
-                    Console.WriteLine(order.OrderId + "," + order.OrderDate + ", " + order.RequiredDate + "," + order.Freight + "," + order.ShipName + ", " + order.ShipCity);
-                }
-                else
-                {
-                    return;
+                    if (id == order.OrderId)
+                    {
+                        Console.WriteLine("Order:" + order.OrderId + " " + order.OrderDate + " " + order.RequiredDate + " " + order.Freight + " " + order.ShipName + " " + order.ShipCity);
+                        Console.WriteLine("Details:" + order);
+                    }
                 }
             }
-        }
+
         }
     }
+}
