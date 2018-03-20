@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EfExample
+namespace Assignment4
 {
     class Program
     {
@@ -20,8 +20,9 @@ namespace EfExample
                 //   GetProductByCatagory(2);
                 //GetOrderDetails(10248);
                 // GetProductDetails(1);
-                GetOrderByID(10260);
-
+                GetOrderDetailsByProductId(10260);
+               // GetOrderByShippingName("Vins et alcools Chevalier");
+                // ListOrders();
 
                 foreach (var product in db.Products.Include(x => x.Category))
                 {
@@ -110,6 +111,7 @@ namespace EfExample
             {
 
                 var product = db.Products.Include(Category => Category.Category).FirstOrDefault(x => x.ProductID == id);
+            
                 Console.WriteLine(product.Name + ", " + product.UnitPrice + ", " + product.Category.Name);
 
 
@@ -171,7 +173,7 @@ namespace EfExample
                     }
             }
         }
-        private static void GetOrderByID(int id)
+        private static Order GetOrderDetailsByProductId(int id)
         {
             using (var db = new NorthwindContext())
             {
@@ -180,23 +182,39 @@ namespace EfExample
                     .ThenInclude(od => od.Product)
                     .ThenInclude(p => p.Category)
                     .FirstOrDefault(x => x.OrderId == id);
-                
-                //order.OrderDetails = db.OrderDetails.Where(x => x.OrderID == id).ToList();
-                foreach (var od in order.OrderDetails)
-                {
-                    Console.WriteLine(od.Quantity + " " + od.Product.Name);
-                }
 
-                //foreach (var order in db.Orders.Include(OrderDetail => OrderDetail.OrderDetails))
-                //{
-                //    if (id == order.OrderId)
-                //    {
-                //        Console.WriteLine("Order:" + order.OrderId + " " + order.OrderDate + " " + order.RequiredDate + " " + order.Freight + " " + order.ShipName + " " + order.ShipCity);
-                //        Console.WriteLine("Details:" + order.);
-                //    }
-                //}
+                return order;
+
+
             }
 
+        }
+
+
+        private static Order GetOrderByShippingName(string name)
+        {
+
+            using (var db = new NorthwindContext())
+            {
+                var order = db.Orders
+                    .Include(o => o.OrderDetails)
+                    .FirstOrDefault(x => x.ShipName == name);
+
+                return order;
+            }
+        }
+
+        private static void ListOrders()
+        {
+            List<Order> orders = new List<Order>();
+            using (var db = new NorthwindContext())
+            {
+
+                var order = db.Orders.ToList();
+
+
+                
+            }
         }
     }
 }

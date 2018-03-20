@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace EfExample
+namespace Assignment4
 {
    public class OrderDetail
     {
