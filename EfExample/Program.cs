@@ -175,14 +175,26 @@ namespace EfExample
         {
             using (var db = new NorthwindContext())
             {
-                foreach (var order in db.Orders.Include(OrderDetail => OrderDetail.OrderDetails))
+                var order = db.Orders
+                    .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                    .ThenInclude(p => p.Category)
+                    .FirstOrDefault(x => x.OrderId == id);
+                
+                //order.OrderDetails = db.OrderDetails.Where(x => x.OrderID == id).ToList();
+                foreach (var od in order.OrderDetails)
                 {
-                    if (id == order.OrderId)
-                    {
-                        Console.WriteLine("Order:" + order.OrderId + " " + order.OrderDate + " " + order.RequiredDate + " " + order.Freight + " " + order.ShipName + " " + order.ShipCity);
-                        Console.WriteLine("Details:" + order.);
-                    }
+                    Console.WriteLine(od.Quantity + " " + od.Product.Name);
                 }
+
+                //foreach (var order in db.Orders.Include(OrderDetail => OrderDetail.OrderDetails))
+                //{
+                //    if (id == order.OrderId)
+                //    {
+                //        Console.WriteLine("Order:" + order.OrderId + " " + order.OrderDate + " " + order.RequiredDate + " " + order.Freight + " " + order.ShipName + " " + order.ShipCity);
+                //        Console.WriteLine("Details:" + order.);
+                //    }
+                //}
             }
 
         }
