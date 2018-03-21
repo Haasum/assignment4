@@ -158,7 +158,7 @@ namespace EfExample
         }
 
 
-        private static void GetProductDetails(int id)
+        private void GetProductDetails(int id)
         {
             using (var db = new NorthwindContext())
             {
