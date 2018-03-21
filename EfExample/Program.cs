@@ -3,9 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assignment4
+
+namespace EfExample
 {
-    class Program
+    public class program
     {
 
         static void Main(string[] args)
@@ -20,8 +21,8 @@ namespace Assignment4
                 //   GetProductByCatagory(2);
                 //GetOrderDetails(10248);
                 // GetProductDetails(1);
-                GetOrderDetailsByProductId(10260);
-               // GetOrderByShippingName("Vins et alcools Chevalier");
+                // GetOrder(10260);
+                // GetOrderByShippingName("Vins et alcools Chevalier");
                 // ListOrders();
 
                 foreach (var product in db.Products.Include(x => x.Category))
@@ -39,58 +40,55 @@ namespace Assignment4
         }
 
 
-        static void UpdateCategoryName(int id, string name)
+        public Category UpdateCategory(int id, string name, string description)
         {
             using (var db = new NorthwindContext())
             {
                 var category = db.Categories.FirstOrDefault(x => x.Id == id);
-                if (category == null) return;
-                category.Name = name;
+                if (category == null)
+                    category.Name = name;
+                category.Description = description;
                 db.SaveChanges();
+                return category;
             }
         }
 
-        static void CreateCategory(Category category)
+        public Category CreateCategory(string name, string description)
         {
             using (var db = new NorthwindContext())
             {
+                Category category = new Category { Name = name, Description = description };
                 db.Categories.Add(category);
                 db.SaveChanges();
+                return category;
             }
         }
 
-        private static void SelectCategories()
+        public List<Category> GetCategories()
         {
             using (var db = new NorthwindContext())
             {
-                foreach (var category in db.Categories)
-                {
-                    Console.WriteLine(category.Id + " " + category.Name + " " + category.Description);
-                }
+                var category = db.Categories;
+                return category.ToList();
             }
         }
 
 
-        private static void PrintCategory(int a)
+
+        public Category GetCategory(int id)
         {
 
             using (var db = new NorthwindContext())
-                foreach (var category in db.Categories)
-                {
-                    if (a == category.Id)
-                    {
-                        Console.WriteLine(category.Id);
-                    }
-                    else
-                    {
-                        return;
-                    }
+            {
+                var category = db.Categories.FirstOrDefault(x => x.Id == id);
+                if (category == null) return null;
+                return category;
 
 
-                }
+            }
 
         }
-        private static bool DeleteCatagory(int id)
+        public bool DeleteCategory(int id)
         {
 
             using (var db = new NorthwindContext())
@@ -105,75 +103,73 @@ namespace Assignment4
                 }
             }
         }
-        private static void GetProductId(int id)
+        public Product GetProduct(int id)
         {
             using (var db = new NorthwindContext())
             {
 
-                var product = db.Products.Include(Category => Category.Category).FirstOrDefault(x => x.ProductID == id);
-            
-                Console.WriteLine(product.Name + ", " + product.UnitPrice + ", " + product.Category.Name);
+                var product = db.Products.Include(Category => Category.Category).FirstOrDefault(x => x.Id == id);
+
+                return product;
 
 
             }
         }
 
 
-        private static void GetProductString(string name)
+        public List<Product> GetProductByName(string name)
         {
             using (var db = new NorthwindContext())
             {
-                foreach (var product in db.Products.Include(Category => Category.Category))
+                var product = db.Products.Where(x => x.Name.Contains(name));
+
+                return product.ToList();
+
+            }
+        }
+
+
+        public List<Product> GetProductByCategory(int id)
+        {
+            using (var db = new NorthwindContext())
+            {
+
+                var product = db.Products.Where(x => x.CategoryId == id);
+
+                return product.ToList();
+            }
+
+
+        }
+
+        public List<OrderDetails> GetOrderDetailsByOrderId(int id)
+        {
+            using (var db = new NorthwindContext())
+            {
+
+                var orderdetail = db.OrderDetails.Include(Product => Product.Product).Where(x => x.OrderId == id);
+                if (orderdetail == null) return null;
+                else
                 {
-                    if (name == product.Name)
-                    {
-                        Console.WriteLine(product.Name + ", " + product.Category.Name);
-                    }
+                    return orderdetail.ToList();
                 }
+
             }
         }
 
 
-        private static void GetProductByCatagory(int id)
-        {
-            using (var db = new NorthwindContext())
-            {
-
-                foreach (var product in db.Products.Include(Category => Category.Category))
-                {
-                    if (id == product.Category.Id)
-                    {
-                        Console.WriteLine(product.Name);
-                    }
-
-                }
-            }
-
-        }
-
-        private static void GetOrderDetails(int id)
-        {
-            using (var db = new NorthwindContext())
-            {
-
-                var orderdetail = db.OrderDetails.Include(Product => Product.Product).FirstOrDefault(x => x.OrderID == id);
-                if (orderdetail == null) return;
-                Console.WriteLine(orderdetail.Product.Name + ", " + orderdetail.UnitPrice + "," + orderdetail.Quantity);
-            }
-
-        }
         private static void GetProductDetails(int id)
         {
             using (var db = new NorthwindContext())
             {
                 foreach (var product in db.Products.Include(OrderDetail => OrderDetail.orderDetail).ThenInclude(Order => Order.Order))
-                    if (product.ProductID == id)
+                    if (product.Id == id)
                     {
-                        Console.WriteLine(product.orderDetail.Order.OrderDate + ", " + product.UnitPrice + ", " + product.orderDetail.Quantity);
+                        Console.WriteLine(product.orderDetail.Order.Date + ", " + product.UnitPrice + ", " + product.orderDetail.Quantity);
                     }
             }
         }
-        private static Order GetOrderDetailsByProductId(int id)
+        public Order GetOrder(int id)
         {
             using (var db = new NorthwindContext())
             {
@@ -181,7 +177,7 @@ namespace Assignment4
                     .Include(o => o.OrderDetails)
                     .ThenInclude(od => od.Product)
                     .ThenInclude(p => p.Category)
-                    .FirstOrDefault(x => x.OrderId == id);
+                    .FirstOrDefault(x => x.Id == id);
 
                 return order;
 
@@ -191,7 +187,7 @@ namespace Assignment4
         }
 
 
-        private static Order GetOrderByShippingName(string name)
+       public Order GetOrderByShippingName(string name)
         {
 
             using (var db = new NorthwindContext())
@@ -204,16 +200,16 @@ namespace Assignment4
             }
         }
 
-        private static void ListOrders()
+        public List<Order> GetOrders()
         {
             List<Order> orders = new List<Order>();
             using (var db = new NorthwindContext())
             {
 
-                var order = db.Orders.ToList();
+                return db.Orders.ToList();
 
 
-                
+
             }
         }
     }
